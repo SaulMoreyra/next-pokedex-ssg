@@ -1,30 +1,34 @@
 import React from "react";
 import { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import { PokemonApi } from "../../api";
 import { PokemonList } from "../../components/pokemon";
-import { Pokemon } from "../../interfaces";
+import { Pokemon, PokemonListResponse } from "../../interfaces";
 import { getPokemon } from "../../utils";
 
 type Props = {
   pokemon: Pokemon;
 };
 
-const PokemonPage: NextPage<Props> = ({ pokemon }) => (
+const PokemonNamePage: NextPage<Props> = ({ pokemon }) => (
   <PokemonList pokemon={pokemon} />
 );
 
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  const pokemons = [...Array(151)].map((_, index) => `${index + 1}`);
+  const { data } = await PokemonApi.get<PokemonListResponse>(
+    "/pokemon?limit=151"
+  );
+  const pokemons = data.results.map(({ name }) => name);
 
   return {
-    paths: pokemons.map((id) => ({ params: { id } })),
+    paths: pokemons.map((name) => ({ params: { name } })),
     fallback: false,
   };
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const { id } = params as { id: string };
-  const pokemon = await getPokemon(id);
+  const { name } = params as { name: string };
+  const pokemon = await getPokemon(name);
   return { props: { pokemon } };
 };
 
-export default PokemonPage;
+export default PokemonNamePage;
