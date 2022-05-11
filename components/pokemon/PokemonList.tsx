@@ -13,9 +13,15 @@ type Props = {
 
 export const PokemonList: FC<Props> = ({ pokemon }) => {
   const [isInFavorites, setIsInFavorites] = useState(
-    typeof window === "undefined" && LocalFavorites.existInFavorites(pokemon.id)
+    typeof window !== "undefined"
+      ? LocalFavorites.existInFavorites(pokemon.id)
+      : false
   );
 
+  console.log(
+    typeof window === "undefined",
+    LocalFavorites.existInFavorites(pokemon.id)
+  );
   const onToggleFavorite = () => {
     LocalFavorites.toggleFavorite(pokemon.id);
     setIsInFavorites(!isInFavorites);
