@@ -18,10 +18,6 @@ export const PokemonList: FC<Props> = ({ pokemon }) => {
       : false
   );
 
-  console.log(
-    typeof window === "undefined",
-    LocalFavorites.existInFavorites(pokemon.id)
-  );
   const onToggleFavorite = () => {
     LocalFavorites.toggleFavorite(pokemon.id);
     setIsInFavorites(!isInFavorites);
@@ -65,16 +61,24 @@ export const PokemonList: FC<Props> = ({ pokemon }) => {
             <Card.Header
               css={{ display: "flex", justifyContent: "space-between" }}
             >
-              <Text h1 transform="capitalize">
-                {pokemon.name}
-              </Text>
-              <Button
-                onClick={onToggleFavorite}
-                color="gradient"
-                ghost={!isInFavorites}
-              >
-                {isInFavorites ? "En Favoritos" : "Guardar en Favoritos"}
-              </Button>
+              <Grid.Container justify="space-between">
+                <Grid xs={12} sm={6}>
+                  <Text h1 transform="capitalize">
+                    {pokemon.name}
+                  </Text>
+                </Grid>
+                <Grid xs={12} sm={6}>
+                  <Grid.Container justify="flex-end" alignItems="center">
+                    <Button
+                      onClick={onToggleFavorite}
+                      color="gradient"
+                      ghost={!isInFavorites}
+                    >
+                      {isInFavorites ? "En Favoritos" : "Guardar en Favoritos"}
+                    </Button>
+                  </Grid.Container>
+                </Grid>
+              </Grid.Container>
             </Card.Header>
             <Card.Body>
               <Text size={30}>Sprites:</Text>

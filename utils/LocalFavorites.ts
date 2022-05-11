@@ -6,6 +6,7 @@ const pokemons = (): number[] => {
 };
 
 const toggleFavorite = (id: number) => {
+  if (typeof window === "undefined") return;
   let favorites = pokemons();
   if (favorites.includes(id)) {
     favorites = favorites.filter((pokeId) => pokeId !== id);
@@ -15,6 +16,7 @@ const toggleFavorite = (id: number) => {
 };
 
 const existInFavorites = (id: number): boolean => {
+  if (typeof window === "undefined") return false;
   const favorites: number[] = pokemons();
   return favorites.includes(id);
 };
